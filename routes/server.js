@@ -17,12 +17,15 @@ var router = express.Router();
  * https://stackoverflow.com/questions/20433287/node-js-request-cert-has-expired#answer-29397100
  */
 // THIS IS A HACK == IDEALLY THIS WOULD BE A SEPARATE PROJECT OR AT LEAST A SEPARATE MODULE/FILE
+// NOT ONLY IS THIS A HACK, BUT IT'S ALSO INSECURE, HOWEVER IT IS FOR DEMONSTRAION ONLY.
+// YOU SHOULD NEVER EVER BYPASS CERT VALIDATION IN A PRODUCTION ENV... EVER
+// - sincerely Cory Sabol: cssabol@gmail.com
 var https = require('https');
 var request = require('request');
 var agentOptions = {
-    host: 'https://127.0.0.1'
+    host: 'localhost'
     , port: '3001'
-    , path: '/auth'
+    //, path: '/auth'
     , rejectUnauthorized: false
 };
 var agent = new https.Agent(agentOptions);
@@ -37,13 +40,16 @@ var options = {
 var https_serv = https.createServer(options, auth_app);
 https_serv.listen('3001');
 // handle microserver API request
-auth_app.get('/auth', function(req, res, next) {
+auth_app.get('/auth', (req, res, next) => {
     res.json('Auth microserver api working');
 });
-// -----------------------
+auth_app.get('/', (req, res, next) => {
+    res.json('hi');
+});
+// END TRICKY HACK -----------------------
 
-// APP API ----
-router.get('/', function(req, res, next) {
+// APP API --------------------------
+router.get('/', (req, res, next) => {
     res.json({
         API_Endpoint: 'API index',
         DESC: {
@@ -57,29 +63,29 @@ router.get('/', function(req, res, next) {
     });
 });
 
-router.get('/auth', function(req, res, next) {
+router.get('/auth', (req, res, next) => {
     // Make a request to our wedid authentication microservice
     var authed;
-    request({
-        url: 'https://127.0.0.1:3001/auth',
-        method: 'GET',
+    https.get({
+        path: '/auth',
         agent: agent
-    }, function(err, resp, body) {
-        if (!err && resp.statusCode === 200) {
-            // A okay!
-            authed = 'We hit the "microservice" auth endpoint';
-        } else {
-            // crud...
-            console.log(err);
-            authed = err.Error;
-        }
+    }, (res) => {
+        console.log('statusCode:', res.statusCode);
+        console.log('headers:', res.headers);
+
+        res.on('data', (d) => {
+            process.stdout.write(d);
+        });
+
+    }).on('error', (e) => {
+         console.error(e);
     });
     res.json(authed);
 });
 
-router.post('/auth', function(req, res, next) {
+router.post('/auth', (req, res, next) => {
     res.json({ MSG: 'Not yet implemented' });
 });
-// ------------
+// ----------------------------------
 
 module.exports = router;
