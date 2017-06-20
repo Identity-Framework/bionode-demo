@@ -41,6 +41,7 @@ var https_serv = https.createServer(options, auth_app);
 https_serv.listen('3001');
 // handle microserver API request
 auth_app.get('/auth', (req, res, next) => {
+    // request and authenticate a WebID certificate here
     res.json('Auth microserver api working');
 });
 auth_app.get('/', (req, res, next) => {
@@ -65,6 +66,7 @@ router.get('/', (req, res, next) => {
 
 router.get('/auth', (req, res, next) => {
     // Make a request to our wedid authentication microservice
+    /*
     var authed;
     https.get({
         path: '/auth',
@@ -80,7 +82,8 @@ router.get('/auth', (req, res, next) => {
     }).on('error', (e) => {
          console.error(e);
     });
-    res.json(authed);
+    */
+    res.redirect('https://localhost:3001/auth');
 });
 
 router.post('/auth', (req, res, next) => {
