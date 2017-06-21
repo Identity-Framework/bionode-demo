@@ -8,3 +8,11 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'Bionode Demo';
 }
+
+// submit the button
+@Component({
+    selector: 'webid-login',
+    template: `
+        <button (click)="onWebID-login" value="Login With WebID+Bio" />
+        `
+})
