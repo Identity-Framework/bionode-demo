@@ -6,7 +6,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
-Run `npm start` for a dev server. Navigate to `http://localhost:3000/`.
+Build the client app by running `ng build` in the project root.
+Start up the node server by running `npm start` for a dev server. Navigate to `http://localhost:3000/`.
 
 ## Code scaffolding
 
