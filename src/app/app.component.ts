@@ -9,7 +9,6 @@ export class AppComponent {
   title = 'Bionode Demo';
 }
 
-// submit the button
 @Component({
     selector: 'webid-login',
     template: `
