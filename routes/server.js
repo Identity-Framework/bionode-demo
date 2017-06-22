@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var webid = require('webid')('tls');
 
 // Authentication trickery
 /*
@@ -23,9 +24,8 @@ var router = express.Router();
 var https = require('https');
 var request = require('request');
 var agentOptions = {
-    host: 'localhost'
+      host: 'localhost'
     , port: '3001'
-    //, path: '/auth'
     , rejectUnauthorized: false
 };
 var agent = new https.Agent(agentOptions);
@@ -42,6 +42,18 @@ https_serv.listen('3001');
 // handle microserver API request
 auth_app.get('/auth', (req, res, next) => {
     // request and authenticate a WebID certificate here
+    // get the cert out of the request
+    const cert = req.connection.getPeerCertificate();
+    console.log(cert);
+
+    webid.verify(cert, (err, result) => {
+        if (err) { 
+            console.log(err); 
+            result = false;
+        }
+        console.log(result);
+    });
+
     res.json('Auth microserver api working');
 });
 auth_app.get('/', (req, res, next) => {
@@ -65,24 +77,8 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/auth', (req, res, next) => {
-    // Make a request to our wedid authentication microservice
-    /*
-    var authed;
-    https.get({
-        path: '/auth',
-        agent: agent
-    }, (res) => {
-        console.log('statusCode:', res.statusCode);
-        console.log('headers:', res.headers);
-
-        res.on('data', (d) => {
-            process.stdout.write(d);
-        });
-
-    }).on('error', (e) => {
-         console.error(e);
-    });
-    */
+    // Might want to change this from a redirect to something else...
+    // We might have to make the call to auth from an i-frame instead
     res.redirect('https://localhost:3001/auth');
 });
 
