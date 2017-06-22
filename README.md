@@ -10,7 +10,13 @@ If you don't alreay have it installed you will need to install ng by running `np
 
 Build the client app by running `ng build` in the project root.
 
-Start up the node server by running `npm start` for a dev server. Navigate to `http://localhost:3000/`.
+From here you have two options:
+
+1. Start up the node server by running `npm start` for a dev server. Navigate to `http://localhost:3000/`.
+    * This will spin up the nodejs server and the Angular application.
+2. Only start the Angular app with no server side using `ng serve -o`. 
+    * This has the benefit of compiling the client-side app on file change and reflecting that in the browser, but you will 
+      not have access to the server side logic this way.
 
 ## Code scaffolding
 
