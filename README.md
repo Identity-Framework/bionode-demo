@@ -6,6 +6,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
+If you don't alreay have it installed you will need to install ng by running `npm install -g @angular/cli`
 Build the client app by running `ng build` in the project root.
 Start up the node server by running `npm start` for a dev server. Navigate to `http://localhost:3000/`.
 
