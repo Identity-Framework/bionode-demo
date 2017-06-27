@@ -53,7 +53,7 @@ auth_app.get('/auth', (req, res, next) => {
         }
         console.log(result);
     });
-
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.json('Auth microserver api working');
 });
 auth_app.get('/', (req, res, next) => {

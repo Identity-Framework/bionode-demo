@@ -1,0 +1,13 @@
+<div>
+  <!--this should query the auth service -->
+  <form>
+    <button (click)='isValidWebid()'>
+      Login with WebID+Biometric
+    </button>
+  </form>
+</div>
+
+<div *ngIf='submitted === true'>
+  <iframe style='width:0; height:0; border:0;' src='https://localhost:3001/auth'>
+  </iframe>
+</div>
