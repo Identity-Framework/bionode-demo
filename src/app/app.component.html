@@ -1,12 +1,66 @@
-<!--The whole content below can be removed with the new code.-->
-<div style="text-align:center">
+
+ 
+
+ <div style="text-align:center">
     <h1>
         {{title}}
     </h1>
 </div>
 <div style="text-align:center">
     <form>
-        <input type="button" ng-click="login()" value="Login With WebID + Biometrics"/>
+        <input type="button" onclick="getStream('video')" value="Login With WebID + Biometrics"/>
     </form>
 </div>
+<div style="text-align:center">
+      
+      <video id = "vid" controls autoplay style="height:300px; width: 300px;"></video>
+      <p><button id="snap" class="btn btn-lg btn-primary" >Take Picture</button></p>
+      
+      <canvas id="canvas" width="300" height="300"></canvas>
+    </div>
+
+
+<script>
+function getUserMedia(options, successCallback, failureCallback) {
+  var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
+    navigator.mozGetUserMedia || navigator.msGetUserMedia;
+  if (api) {
+    return api.bind(navigator)(options, successCallback, failureCallback);
+  }
+  alert('User Media API not supported.');
+}
+
+function getStream(type) {
+  var constraints = {};
+  constraints[type] = true;
+  getUserMedia(constraints, function(stream) {
+    var mediaControl = document.querySelector(type);
+    if (navigator.mozGetUserMedia) {
+      mediaControl.mozSrcObject = stream;
+    } else {
+      mediaControl.srcObject = stream;
+      mediaControl.src = (window.URL || window.webkitURL).createObjectURL(stream);
+    }
+  }, function(err) {
+    alert('Error: ' + err);
+  });
+}
+// Converts canvas to an image
+function convertCanvasToImage(canvas) {
+  var image = new Image();
+  image.src = canvas.toDataURL("image/png");
+  return image;
+}
+
+var video = document.getElementById('vid');
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+document.getElementById("snap").addEventListener("click", function() {
+  console.log("works!");
+  context.drawImage(vid, 0, 0, 300, 300);
+});
+
+</script>
+
+
 
