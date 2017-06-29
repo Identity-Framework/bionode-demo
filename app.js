@@ -3,15 +3,39 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var session = require('express-session');
+var uuidv4 = require('uuid/v4');
 
 var server = require('./routes/server');
+var index = require('./routes/index');
 var app = express();
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended':'false'}));
+
+// Session config
+// this has to be called before our static setup. 
+// This way the req to / will set the cookie and session
+// before the static middleware can finish the request.
+app.use(session({
+    genid: (req) => {
+        return uuidv4();
+    },
+    secret: 'super duper secretive secret...',
+    resave: false,
+    // saveUninitialized: false,
+    saveUninitialized: true,
+    cookie: {
+        secure: true
+    },
+    validWebid: false,
+    validBiometric: false
+}));
+
 app.use(express.static(path.join(__dirname, 'dist')));
 
+app.use('/', index);
 app.use('/api', server);
 
 // catch 404 and forward to error handler
