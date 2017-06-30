@@ -38,7 +38,7 @@ export class FacecapComponent implements AfterViewInit, AfterViewChecked {
       api.then(successCallback)
          .catch(failureCallback);
     } else {
-      alert('User Media API not supported.');
+      alert('User Media API not supported. Please update your browser');
     }
   }
 
@@ -63,4 +63,5 @@ export class FacecapComponent implements AfterViewInit, AfterViewChecked {
     image.src = canvas.toDataURL('image/png');
     return image; // not sure of the type to use for func sig
   }
+
 }
