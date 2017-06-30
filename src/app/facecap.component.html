@@ -1,1 +1,19 @@
-
+<div style='text-align:center'>
+    <button (click)='getStream("video")'>
+        Allow webcam access
+    </button>
+</div>
+<div style='text-align:center'
+    *ngIf='access'>
+    <video 
+        #video
+        id='vid' 
+        autoplay
+        style='height:400px; width:400px;'>
+    </video>
+    <button #snap id='snap' (click)='canvasToImage(canvas)'>Take Photo</button>
+    <canvas #canvas id='canvas' width='350' height='300'></canvas>
+</div>
+<ng-template #accessDenied>
+    <div><p>Access to cam denied.</p></div>
+</ng-template>
