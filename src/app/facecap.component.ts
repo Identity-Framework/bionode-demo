@@ -1,11 +1,16 @@
-import { Component, AfterViewInit, AfterViewChecked, ViewChild, ElementRef } from '@angular/core';
+import { 
+  Component, 
+  AfterViewChecked, 
+  ViewChild, 
+  ElementRef 
+} from '@angular/core';
 
 @Component({
   selector: 'facecap',
   templateUrl: './facecap.component.html',
   styleUrls: [ './facecap.component.css' ],
 })
-export class FacecapComponent implements AfterViewInit, AfterViewChecked { 
+export class FacecapComponent implements AfterViewChecked { 
 
   @ViewChild('video') video: ElementRef;
   @ViewChild('canvas') canvas: ElementRef;
