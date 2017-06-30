@@ -63,9 +63,11 @@ export class FacecapComponent implements AfterViewChecked {
     });
   }
 
-  canvasToImage(canvas: HTMLCanvasElement): any {
+  canvasToImage(): any {
+    let canvasElem = this.canvas.nativeElement;
     let image = new Image();
-    image.src = canvas.toDataURL('image/png');
+    image.src = canvasElem.toDataURL('image/png');
+    console.log('tried to capture image');
     return image; // not sure of the type to use for func sig
   }
 
