@@ -6,8 +6,7 @@ import {
 } from '@angular/core';
 
 //import * as od from 'js-objectdetect';
-import * as od from 'js-objectdetect';
-let gray: any = od.convertRgbaToGrayscale([1,2,1,1,1], []);
+//let gray: any = od.convertRgbaToGrayscale([1,2,1,1,1], []);
 @Component({
   selector: 'facecap',
   templateUrl: './facecap.component.html',
