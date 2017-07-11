@@ -3,8 +3,9 @@
         Allow webcam access
     </button>
 </div>
-<div style='text-align:center'
-    *ngIf='access'>
+<div 
+    style='text-align:center;display:none;'
+    #mediaContainer>
     <video 
         #video
         id='vid' 

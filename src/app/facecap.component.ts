@@ -1,9 +1,13 @@
 import { 
   Component, 
-  AfterViewChecked, 
+  AfterViewInit,
   ViewChild, 
-  ElementRef
+  ElementRef,
+  Injectable
 } from '@angular/core';
+
+// import out authentication sevice
+import { AuthService } from './auth.service';
 
 //import * as od from 'js-objectdetect';
 //let gray: any = od.convertRgbaToGrayscale([1,2,1,1,1], []);
@@ -12,26 +16,28 @@ import {
   templateUrl: './facecap.component.html',
   styleUrls: [ './facecap.component.css' ],
 })
-export class FacecapComponent implements AfterViewChecked { 
+export class FacecapComponent implements AfterViewInit { 
 
   @ViewChild('video') video: ElementRef;
   @ViewChild('canvas') canvas: ElementRef;
+  @ViewChild('mediaContainer') container: ElementRef;
   
   access: boolean = false;
-  hasCanvasAndVideo = false;
   canvasElem: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
 
-  ngAfterViewInit(): void { }
+  ngAfterViewInit(): void { 
+    console.log(
+      this.canvas,
+      this.video
+    );
+    this.context = this.canvas.nativeElement.getContext('2d');
+  }
 
-  ngAfterViewChecked(): void { 
-    if (this.hasCanvasAndVideo) {
-      console.log(
-        this.canvas,
-        this.video
-      );
-      this.context = this.canvas.nativeElement.getContext('2d');
-      this.hasCanvasAndVideo = false;
+  ngAfterViewChecked(): void {
+    if (this.access) {
+      // unhide the media container
+      this.container.nativeElement.style.display = 'block';
     }
   }
 
@@ -53,7 +59,6 @@ export class FacecapComponent implements AfterViewChecked {
     let constraints = {};
     constraints[type] = true;
     this.getUserMedia(constraints, (stream) => {
-      this.hasCanvasAndVideo = true;
       this.access = true;
       let mediaControl = document.querySelector(type);
       mediaControl.srcObject = stream;
