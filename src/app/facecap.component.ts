@@ -8,9 +8,11 @@ import {
 
 // import out authentication sevice
 import { AuthService } from './auth.service';
+//import { objectdetect as od } from 'js-objectdetect';
+import * as od from 'js-objectdetect';
 
-//import * as od from 'js-objectdetect';
-//let gray: any = od.convertRgbaToGrayscale([1,2,1,1,1], []);
+console.log(od);
+
 @Component({
   selector: 'facecap',
   templateUrl: './facecap.component.html',
