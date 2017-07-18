@@ -10,8 +10,9 @@ import {
 import { AuthService } from './auth.service';
 //import { objectdetect as od } from 'js-objectdetect';
 import * as od from 'js-objectdetect';
+import * as lb from 'LBP';
 
-console.log(od);
+//console.log(od);
 
 @Component({
   selector: 'facecap',
@@ -103,12 +104,63 @@ export class FacecapComponent implements AfterViewInit {
     
     if(faces.length >= 1){
       let faceData = context.getImageData(faces[0][0], faces[0][1], faces[0][2], faces[0][3]);
-      this.greyscale(faceData);
-      context.clearRect(0, 0, canvasElem.width, canvasElem.height);
-      context.putImageData(faceData,0,0);
-    }
       
-        
+      this.greyscale(faceData);
+      context.clearRect(0, 0, canvasElem.width,canvasElem.height);
+      context.putImageData(faceData,0,0);
+      this.getPatches(faceData);
+    }    
   }
+  getPatches(imgData): any {
+    let dataArray = imgData.data;
+    let newArray = [];
+    for(let i = 0; i < dataArray.length; i += 4)
+    {
+      let red = dataArray[i];
+      let green = dataArray[i + 1];
+      let blue = dataArray[i + 2];
+      let alpha = dataArray[i + 3];
+        
+      newArray.push(alpha * ((red >> 1) + (green >> 2) + (blue >> 4)));
+    }
+
+    let array2D = [];
+    let len = Math.sqrt(newArray.length);
+    for(let i = 0; i < len; i++){
+      let row = [];
+      for(let j = 0; j < len; j ++){
+        row.push(newArray[len*i + j]);
+      }
+      array2D.push(row);
+    }
+    console.log(array2D)
+    let test = new lb();
+    let lbp = new lb(array2D, 8, 1); // 8 is number of sampling points, 1 is radius
+
+    // calculate LBP, contrast and variance for pixel at position [1,1]
+    console.log(lbp.calculate(1, 1));
+
+    // calculate LBP distribution, contrast and variance for whole image
+    console.log(lbp.distribution());
+    }
+
+
+
+  //let canvasElem = this.canvas.nativeElement;
+    
+  //  let context = canvasElem.getContext('2d');
+  //  let patches = [];
+  //  for(let i = 0; i <= 77; i += 1)
+  //  {
+  //    let xIndex = i;
+  //    let yIndex = i + 78;
+  //    let widthIndex = 156;
+  //    let heightIndex = 157;
+  //    let patch = context.getImageData(xIndex, yIndex, widthIndex, heightIndex);
+  //    patches.push(patch);
+  //  }
+ //   console.log(patches);
+//    return patches;
+//  }
 
 }
